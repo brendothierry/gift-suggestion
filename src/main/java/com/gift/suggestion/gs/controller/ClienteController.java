@@ -1,22 +1,36 @@
 package com.gift.suggestion.gs.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.gift.suggestion.gs.DTO.ClienteDTO;
+import com.gift.suggestion.gs.model.ClienteModel;
+import com.gift.suggestion.gs.service.ClienteService;
 
-@RestController
-@RequestMapping("/api")
+@Controller
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/gift-suggestion")
 
 public class ClienteController {
 	
-	@PostMapping("/criar-cliente")
-	public ResponseEntity<String> criarCliente(@RequestBody ClienteDTO clienteDTO) {
-		
-		
-		return null;
+	final ClienteService clienteService;
+	
+	public ClienteController(ClienteService clienteService) {
+		this.clienteService = clienteService;
+	}
+	
+	@PostMapping("/gs/criar-cliente")
+	public ResponseEntity<Object> criarCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
+		var clienteModel = new ClienteModel();
+		BeanUtils.copyProperties(clienteDTO, clienteModel);
+		return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.criarCliente(clienteModel));
 	}
 }

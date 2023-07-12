@@ -1,35 +1,24 @@
 package com.gift.suggestion.gs.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.gift.suggestion.gs.DTO.ClienteDTO;
+import com.gift.suggestion.gs.model.ClienteModel;
+import com.gift.suggestion.gs.repositories.ClienteRepository;
 
 @Service
+@Component
 public class ClienteService {
-	RestTemplate restTemplate = new RestTemplate();
-
-	@Autowired
-	public ClienteService(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
-	}
 	
-	 public void criarCliente(ClienteDTO cliente) {
+	final ClienteRepository clienteRepository;
 
-	        HttpEntity<ClienteDTO> requestEntity = new HttpEntity<>(cliente);
-	        String url = "";
-	        ResponseEntity<Void> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Void.class);
+	public ClienteService(ClienteRepository clienteRepository) {
+		this.clienteRepository = clienteRepository;
+	}
 
-	        if (responseEntity.getStatusCode().is2xxSuccessful()) {
-	            // A requisição foi bem-sucedida
-	            System.out.println("Cliente criado com sucesso!");
-	        } else {
-	            // Lidar com erros, se necessário
-	            System.out.println("Ocorreu um erro ao criar o cliente.");
-	        }
-	    }
+	@Transactional
+	public ClienteModel criarCliente(ClienteModel clienteModel) {
+		return clienteRepository.save(clienteModel);
+	}
 }

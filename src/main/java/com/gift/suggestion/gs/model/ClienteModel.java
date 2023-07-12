@@ -1,24 +1,48 @@
-package com.gift.suggestion.gs.DTO;
+package com.gift.suggestion.gs.model;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.UUID;
 
-public class ClienteDTO {
-	@NotBlank
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "TB_CLIENTES_GS")
+public class ClienteModel implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private UUID id;
+
+	@Column(nullable = false, length = 40)
 	private String nome;
-	@NotBlank
+	@Column(nullable = false, unique = true, length = 20)
 	private String cpf;
-	@NotBlank
+	@Column(nullable = false, length = 40)
 	private String dataNascimento;
-	@NotBlank
+	@Column(nullable = false, unique = true, length = 20)
 	private String celular;
-	@NotBlank
+	@Column(nullable = false, unique = true, length = 40)
 	private String email;
-	@NotBlank
+	@Column(nullable = false, unique = true, length = 20)
 	private String login;
-	@NotBlank
+	@Column(nullable = false, length = 20)
 	private String senha;
-	@NotBlank
+	@Column(nullable = false, length = 20)
 	private String confirmaSenha;
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
 	public String getNome() {
 		return nome;
@@ -82,6 +106,10 @@ public class ClienteDTO {
 
 	public void setConfirmaSenha(String confirmaSenha) {
 		this.confirmaSenha = confirmaSenha;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }
