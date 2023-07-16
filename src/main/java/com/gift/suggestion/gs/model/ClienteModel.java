@@ -33,7 +33,7 @@ public class ClienteModel implements Serializable {
 	private String login;
 	@Column(nullable = false, length = 20)
 	private String senha;
-	@Column(nullable = false, length = 20)
+	@Column(nullable = true, length = 20)
 	private String confirmaSenha;
 
 	public UUID getId() {

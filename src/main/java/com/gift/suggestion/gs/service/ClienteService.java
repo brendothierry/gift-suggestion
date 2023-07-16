@@ -1,6 +1,8 @@
 package com.gift.suggestion.gs.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -27,5 +29,15 @@ public class ClienteService {
 	@Transactional
 	public List<ClienteModel> findAllClientes() {		
 		return clienteRepository.findAll();
+  }
+  
+  @Transactional
+	public Optional<ClienteModel> buscarClientePorId(UUID id) {
+		return clienteRepository.findById(id);	
+	}
+	
+	@Transactional
+	public ClienteModel atualizarCliente(ClienteModel clienteModel) {
+		return clienteRepository.save(clienteModel);
 	}
 }
