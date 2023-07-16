@@ -1,5 +1,8 @@
 package com.gift.suggestion.gs.service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,16 @@ public class ClienteService {
 
 	@Transactional
 	public ClienteModel criarCliente(ClienteModel clienteModel) {
+		return clienteRepository.save(clienteModel);
+	}
+	
+	@Transactional
+	public Optional<ClienteModel> buscarClientePorId(UUID id) {
+		return clienteRepository.findById(id);	
+	}
+	
+	@Transactional
+	public ClienteModel atualizarCliente(ClienteModel clienteModel) {
 		return clienteRepository.save(clienteModel);
 	}
 }
