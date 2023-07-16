@@ -1,5 +1,7 @@
 package com.gift.suggestion.gs.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,5 +22,10 @@ public class ClienteService {
 	@Transactional
 	public ClienteModel criarCliente(ClienteModel clienteModel) {
 		return clienteRepository.save(clienteModel);
+	}
+	
+	@Transactional
+	public List<ClienteModel> findAllClientes() {		
+		return clienteRepository.findAll();
 	}
 }
