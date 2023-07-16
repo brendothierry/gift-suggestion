@@ -1,5 +1,6 @@
 package com.gift.suggestion.gs.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +27,11 @@ public class ClienteService {
 	}
 	
 	@Transactional
+	public List<ClienteModel> findAllClientes() {		
+		return clienteRepository.findAll();
+  }
+  
+  @Transactional
 	public Optional<ClienteModel> buscarClientePorId(UUID id) {
 		return clienteRepository.findById(id);	
 	}

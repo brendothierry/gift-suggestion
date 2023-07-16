@@ -1,5 +1,6 @@
 package com.gift.suggestion.gs.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,6 +34,7 @@ public class ClienteController {
 		this.clienteService = clienteService;
 	}
 	
+
 	@PostMapping("/gs/create-cliente")
 	public ResponseEntity<Object> criarCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
 		var clienteModel = new ClienteModel();
@@ -67,4 +69,12 @@ public class ClienteController {
 		
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(clienteService.criarCliente(clienteModel));
 	}
+	
+	@GetMapping("/gs/findAll")
+	public ResponseEntity<List<ClienteModel>> findAllClientes(){
+		return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAllClientes());
+	}
+	
+	
+	
 }
