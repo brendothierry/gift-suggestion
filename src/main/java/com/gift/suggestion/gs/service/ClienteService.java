@@ -13,7 +13,7 @@ import com.gift.suggestion.gs.repositories.ClienteRepository;
 @Service
 @Component
 public class ClienteService {
-	
+
 	final ClienteRepository clienteRepository;
 
 	public ClienteService(ClienteRepository clienteRepository) {
@@ -24,27 +24,22 @@ public class ClienteService {
 	public ClienteModel criarCliente(ClienteModel clienteModel) {
 		return clienteRepository.save(clienteModel);
 	}
-	
-  @Transactional
-	public Optional<ClienteModel> findById(UUID id){
-		return clienteRepository.findById(id);
-	}
-	
+
 	@Transactional
 	public void delete(ClienteModel parkingSpotModel) {
 		clienteRepository.delete(parkingSpotModel);
 	}
-	
+
 	@Transactional
-	public List<ClienteModel> findAllClientes() {		
+	public List<ClienteModel> findAllClientes() {
 		return clienteRepository.findAll();
-  }
-  
-  @Transactional
-	public Optional<ClienteModel> buscarClientePorId(UUID id) {
-		return clienteRepository.findById(id);	
 	}
-	
+
+	@Transactional
+	public Optional<ClienteModel> buscarClientePorId(UUID id) {
+		return clienteRepository.findById(id);
+	}
+
 	@Transactional
 	public ClienteModel atualizarCliente(ClienteModel clienteModel) {
 		return clienteRepository.save(clienteModel);
