@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.gift.suggestion.gs.model.ClienteModel;
 import com.gift.suggestion.gs.repositories.ClienteRepository;
 
@@ -24,6 +23,16 @@ public class ClienteService {
 	@Transactional
 	public ClienteModel criarCliente(ClienteModel clienteModel) {
 		return clienteRepository.save(clienteModel);
+	}
+	
+  @Transactional
+	public Optional<ClienteModel> findById(UUID id){
+		return clienteRepository.findById(id);
+	}
+	
+	@Transactional
+	public void delete(ClienteModel parkingSpotModel) {
+		clienteRepository.delete(parkingSpotModel);
 	}
 	
 	@Transactional
