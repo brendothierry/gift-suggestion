@@ -46,7 +46,7 @@ public class ClienteService {
 	}
 	
 	@Transactional
-	public Optional<ClienteModel> buscarClientePorEmail(String email) {
+	public Optional<Object[]> buscarClientePorEmail(String email) {
 		return clienteRepository.getByEmail(email);
 	}
 }

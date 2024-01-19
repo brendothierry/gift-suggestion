@@ -1,5 +1,6 @@
 package com.gift.suggestion.gs.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,8 +26,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.gift.suggestion.gs.DTO.ChatCompletionResponse;
 import com.gift.suggestion.gs.DTO.ClienteDTO;
+import com.gift.suggestion.gs.DTO.LoginRequestDTO;
 import com.gift.suggestion.gs.model.ClienteModel;
 import com.gift.suggestion.gs.service.ClienteService;
+import com.gift.suggestion.gs.validator.JwtTokenProvider;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -40,7 +43,7 @@ public class ClienteController {
 	private String OPENAI_API_KEY;
 
 	final ClienteService clienteService;
-	
+
 	public ClienteController(ClienteService clienteService) {
 		this.clienteService = clienteService;
 	}
@@ -105,15 +108,15 @@ public class ClienteController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(clienteModelOptional.get());
 	}
-	
+
 	@GetMapping("/gs/getByEmail-cliente/{email}")
 	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Object> buscarPorEmail(@PathVariable(value = "email") String email) {
-		Optional<ClienteModel> clienteModelOptional = clienteService.buscarClientePorEmail(email);
-		if (clienteModelOptional == null || !clienteModelOptional.isPresent()) {
+		Optional<Object[]> clienteModelOptional = clienteService.buscarClientePorEmail(email);
+		if (!clienteModelOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente not found");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(clienteModelOptional.get().getEmail());
+		return ResponseEntity.status(HttpStatus.OK).body(clienteModelOptional.get());
 	}
 
 	@PutMapping("/gs/update-cliente/{id}")
@@ -154,4 +157,33 @@ public class ClienteController {
 		return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAllClientes());
 	}
 
+	@PostMapping("/gs/login")
+	@CrossOrigin(origins = "http://localhost:3000")
+	public ResponseEntity<Object> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
+		// Verificar as credenciais do usuário
+		Optional<Object[]> resultado = clienteService.buscarClientePorEmail(loginRequest.getEmail());
+
+		if (resultado.isPresent()) {
+			Object[] clienteData = resultado.get();
+			if (clienteData != null && clienteData.length > 0) {
+				// Obtém o primeiro subarray
+				Object[] primeiroSubArray = (Object[]) clienteData[0];
+
+				if (primeiroSubArray != null && primeiroSubArray.length >= 3) {
+					String senha = (String) primeiroSubArray[1];
+
+					if (senha != null && senha.equals(loginRequest.getSenha())) {
+						return ResponseEntity.status(HttpStatus.OK).body(clienteData);
+					} else {
+						return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+					}
+				}
+			}
+			// Gere um token de autenticação (pode usar JWT, por exemplo)
+			// JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+			// String userId = jwtTokenProvider.generateToken(userId);
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente not found.");
+	}
 }
