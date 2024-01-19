@@ -13,7 +13,7 @@ import com.gift.suggestion.gs.model.ClienteModel;
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteModel, UUID>{
 	
-	@Query("SELECT c FROM ClienteModel c WHERE c.email = :email")
-    Optional<ClienteModel> getByEmail(@Param("email") String email);
+	@Query("SELECT c.email, c.senha, c.id FROM ClienteModel c WHERE c.email = :email")
+    Optional<Object[]> getByEmail(@Param("email") String email);
     
 }
