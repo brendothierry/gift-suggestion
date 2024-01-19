@@ -46,6 +46,7 @@ public class ClienteController {
 	}
 
 	@PostMapping("/gs/obterRespostaDoChatGPT")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<ChatCompletionResponse> obterRespostaDoChatGPT(@RequestBody String mensagem) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -88,6 +89,7 @@ public class ClienteController {
 	}
 
 	@PostMapping("/gs/create-cliente")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Object> criarCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
 		var clienteModel = new ClienteModel();
 		BeanUtils.copyProperties(clienteDTO, clienteModel);
@@ -95,6 +97,7 @@ public class ClienteController {
 	}
 
 	@GetMapping("/gs/getById-cliente/{id}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Object> buscarClientePorId(@PathVariable(value = "id") UUID id) {
 		Optional<ClienteModel> clienteModelOptional = clienteService.buscarClientePorId(id);
 		if (!clienteModelOptional.isPresent()) {
@@ -102,8 +105,19 @@ public class ClienteController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(clienteModelOptional.get());
 	}
+	
+	@GetMapping("/gs/getByEmail-cliente/{email}")
+	@CrossOrigin(origins = "http://localhost:3000")
+	public ResponseEntity<Object> buscarPorEmail(@PathVariable(value = "email") String email) {
+		Optional<ClienteModel> clienteModelOptional = clienteService.buscarClientePorEmail(email);
+		if (clienteModelOptional == null || !clienteModelOptional.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente not found");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(clienteModelOptional.get().getEmail());
+	}
 
 	@PutMapping("/gs/update-cliente/{id}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Object> atualizarCliente(@PathVariable(value = "id") UUID id,
 			@RequestBody @Valid ClienteDTO clienteDTO) {
 		Optional<ClienteModel> clienteModelOptional = clienteService.buscarClientePorId(id);
@@ -124,6 +138,7 @@ public class ClienteController {
 	}
 
 	@DeleteMapping("/gs/delete-cliente/{id}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Object> deleteById(@PathVariable(value = "id") UUID id) {
 		Optional<ClienteModel> clienteModelOptional = clienteService.buscarClientePorId(id);
 		if (!clienteModelOptional.isPresent()) {
@@ -134,6 +149,7 @@ public class ClienteController {
 	}
 
 	@GetMapping("/gs/findAll")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<List<ClienteModel>> findAllClientes() {
 		return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAllClientes());
 	}

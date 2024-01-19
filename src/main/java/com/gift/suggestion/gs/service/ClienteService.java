@@ -14,7 +14,7 @@ import com.gift.suggestion.gs.repositories.ClienteRepository;
 @Component
 public class ClienteService {
 
-	final ClienteRepository clienteRepository;
+	private ClienteRepository clienteRepository;
 
 	public ClienteService(ClienteRepository clienteRepository) {
 		this.clienteRepository = clienteRepository;
@@ -43,5 +43,10 @@ public class ClienteService {
 	@Transactional
 	public ClienteModel atualizarCliente(ClienteModel clienteModel) {
 		return clienteRepository.save(clienteModel);
+	}
+	
+	@Transactional
+	public Optional<ClienteModel> buscarClientePorEmail(String email) {
+		return clienteRepository.getByEmail(email);
 	}
 }
