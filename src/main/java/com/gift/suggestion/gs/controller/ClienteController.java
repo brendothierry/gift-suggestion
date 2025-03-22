@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,9 +37,9 @@ import com.google.gson.JsonObject;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ClienteController {
 
-	@Value("${openai.api.url")
+	@Value("${openai.api.url}")
 	private String OPENAI_API_URL;
-	@Value("${openai.api.key")
+	@Value("${openai.api.key}")
 	private String OPENAI_API_KEY;
 
 	final ClienteService clienteService;

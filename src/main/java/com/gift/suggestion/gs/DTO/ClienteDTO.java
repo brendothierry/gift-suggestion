@@ -1,6 +1,6 @@
 package com.gift.suggestion.gs.DTO;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class ClienteDTO {
 	@NotBlank
